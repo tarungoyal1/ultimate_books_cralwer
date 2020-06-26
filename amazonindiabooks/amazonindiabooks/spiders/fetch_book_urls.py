@@ -6,8 +6,9 @@ from bs4 import BeautifulSoup
 class FetchBookUrlsSpider(scrapy.Spider):
     name = 'fetch_book_urls'
     allowed_domains = ['www.amazon.in']
+    start_urls = ['https://www.amazon.in/s/ref=lp_4149451031_nr_n_0?fst=as%3Aoff&rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A15417300031%2Cn%3A4149418031%2Cn%3A4149451031%2Cn%3A4149452031&bbn=4149451031&ie=UTF8&qid=1593178371&rnid=4149451031']
     # start_urls = ['https://www.amazon.in/s?rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A1318158031&page=2&qid=1593170560&ref=lp_1318158031_pg_2']
-    start_urls = ['https://www.amazon.in/s/ref=lp_976389031_nr_n_0?fst=as%3Aoff&rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A1318158031&bbn=976390031&ie=UTF8&qid=1593169718&rnid=976390031']
+    # start_urls = ['https://www.amazon.in/s/ref=lp_976389031_nr_n_0?fst=as%3Aoff&rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A1318158031&bbn=976390031&ie=UTF8&qid=1593169718&rnid=976390031']
 
     # Bind this spider with it's own separate pipeline (BookUrlPipeline)
     custom_settings = {
@@ -19,7 +20,7 @@ class FetchBookUrlsSpider(scrapy.Spider):
     def parse(self, response):
 
         book_urls = response.xpath("//span[contains(@class, 'a-size-medium')] | //h2")
-        genre = ['Action', 'Adventure']
+        genre = ['Computer science', 'Algorithms']
         scraped_urls_list = {'genre':genre, 'urls_list':[]}
         urls_list = []
         for url in book_urls:
