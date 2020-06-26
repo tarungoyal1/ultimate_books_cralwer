@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from bs4 import BeautifulSoup
+import re
 
 
 class FetchBookUrlsSpider(scrapy.Spider):
     name = 'fetch_book_urls'
-    allowed_domains = ['www.amazon.in']
-    start_urls = ['https://www.amazon.in/s/ref=lp_4149451031_nr_n_0?fst=as%3Aoff&rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A15417300031%2Cn%3A4149418031%2Cn%3A4149451031%2Cn%3A4149452031&bbn=4149451031&ie=UTF8&qid=1593178371&rnid=4149451031']
+    allowed_domains = ['www.amazon.com']
+    start_urls = [
+        'https://www.amazon.com/s/ref=lp_5_nr_n_3?fst=as%3Aoff&rh=n%3A283155%2Cn%3A%211000%2Cn%3A5%2Cn%3A549646&bbn=5&ie=UTF8&qid=1593182662&rnid=5'
+    ]
     # start_urls = ['https://www.amazon.in/s?rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A1318158031&page=2&qid=1593170560&ref=lp_1318158031_pg_2']
     # start_urls = ['https://www.amazon.in/s/ref=lp_976389031_nr_n_0?fst=as%3Aoff&rh=n%3A976389031%2Cn%3A%21976390031%2Cn%3A1318158031&bbn=976390031&ie=UTF8&qid=1593169718&rnid=976390031']
 
@@ -20,11 +22,19 @@ class FetchBookUrlsSpider(scrapy.Spider):
     def parse(self, response):
 
         book_urls = response.xpath("//span[contains(@class, 'a-size-medium')] | //h2")
-        genre = ['Computer science', 'Algorithms']
+        genre = ['Computer science', 'Database']
         scraped_urls_list = {'genre':genre, 'urls_list':[]}
         urls_list = []
+
+        pattern = re.compile(r'(.+dp\/[a-zA-Z0-9]+)\/?')
+
         for url in book_urls:
-            urls_list.append(response.urljoin(url.xpath(".//parent::a/@href").get()))
+            url_string = response.urljoin(url.xpath(".//parent::a/@href").get())
+            match = re.findall(pattern, url_string)
+            if match:
+                urls_list.append(match[0])
+            else:
+                urls_list.append(url_string)
         scraped_urls_list['urls_list'] = urls_list[:-1]
         yield scraped_urls_list
 
