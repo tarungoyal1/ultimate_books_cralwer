@@ -1,0 +1,5 @@
+https://www.amazon.com/s?i=stripbooks&bbn=5&rh=n%3A283155%2Cn%3A5%2Cn%3A377560011%2Cp_n_feature_two_browse-bin%3A10806566011&dc&fst=as%3Aoff&qid=1593244740&rnid=5&ref=sr_nr_n_16
+['Computer science', 'Security', 'Encryption', 'Hacking']
+
+https://www.amazon.com/s?i=stripbooks&bbn=5&rh=n%3A283155%2Cn%3A5%2Cn%3A4053%2Cp_n_feature_two_browse-bin%3A10806566011&dc&fst=as%3Aoff&qid=1593244740&rnid=5&ref=sr_nr_n_17
+['Computer science', 'Software']

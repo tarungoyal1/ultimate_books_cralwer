@@ -35,3 +35,23 @@ class BookUrlPipeline:
                 return True
         else:
             return False
+
+class BookDetailsPipeline:
+
+    def open_spider(self, spider):
+        self.client = MongoClient()
+        self.db = self.client['amazon_books']
+        self.col_book_details = self.db['amazon_book_details']
+        self.col_book_urls = self.db['amazon_book_urls']
+
+    def close_spider(self, spider):
+        self.client.close()
+
+    def process_item(self, item, spider):
+        if item:
+            if not self.col_book_details.find_one({'book_url':item['book_url']}):
+                if self.col_book_details.insert_one(item):
+                    if self.col_book_urls.update_one({'url': item['book_url']}, {'$set': {'status': 'done'}},upsert=False).modified_count == 1:
+                        return "Book details added having url = {}".format(item['book_url'])
+            elif self.col_book_urls.update_one({'url': item['book_url']}, {'$set': {'status': 'done'}},upsert=False).modified_count == 1:
+                return "Book already scraped having url = {}".format(item['book_url'])
